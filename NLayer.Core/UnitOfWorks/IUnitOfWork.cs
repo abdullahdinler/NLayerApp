@@ -10,6 +10,5 @@ namespace NLayer.Core.UnitOfWorks
     {
         Task CommitAsync();
         void Commit();
-
     }
 }

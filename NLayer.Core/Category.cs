@@ -8,6 +8,6 @@ namespace NLayer.Core
 {
     public class Category : BaseEntity
     {
-        public ICollection<Product>? Products { get; set; }
+        public ICollection<Product> Products { get; set; }
     }
 }
