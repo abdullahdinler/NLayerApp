@@ -1,10 +1,13 @@
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using NLayer.Core.Repositories;
+using NLayer.Core.Services;
 using NLayer.Core.UnitOfWorks;
 using NLayer.Repository;
 using NLayer.Repository.Repositories;
 using NLayer.Repository.UnitOfWorks;
+using NLayer.Service.Mapping;
+using NLayer.Service.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +23,13 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 // IGenericRepository arayüzünü gördüðu zaman GenericRepository tan nesne oluþturacaðýný anlayacak ve burada nesnenin yaþam süresini belirlemiþ olduk.
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+
+// IService arayüzünü gördüðu zaman Service ten nesne oluþturacaðýný anlayacak ve burada nesnenin yaþam süresini belirlemiþ olduk.
+builder.Services.AddScoped(typeof(IService<>), typeof(Service<>));
+
+// AutoMapper'ý projemize dahil ettik.
+builder.Services.AddAutoMapper(typeof(MapProfile));
+
 
 // Burada appsettings.json dosyasýnda belirlediðimiz connection adresini aliyoruz. Ve daha sonra appdbcontextimizin nerede oluðunu acýkca bildiriyoruz.
 builder.Services.AddDbContext<AppDbContext>(x =>

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using NLayer.Core;
+using NLayer.Core.Models;
 
 namespace NLayer.Repository.Configurations
 {
@@ -21,7 +21,7 @@ namespace NLayer.Repository.Configurations
             builder.Property(x => x.Price).IsRequired().HasColumnType("decimal(18,2)"); // Burada price zorunlu bir alan olduğu ve veri tipinin decimal olup 18 karekter olup virgülden sonra iki basamak olması söylendi.
 
             //Product ile Category entitysi arasındaki ilişki belirlendi. (Bire çok ilişki)
-           // builder.HasOne(x => x.Category).WithMany(x => x.Products).HasForeignKey(x => x.Id);
+            builder.HasOne(x => x.Category).WithMany(x => x.Products).HasForeignKey(x => x.CategoryId);
         }
     }
 }

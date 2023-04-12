@@ -15,7 +15,7 @@ namespace NLayer.Repository.Repositories
     {
         protected readonly AppDbContext _context;
         private readonly DbSet<T> _dbSet;
-
+      
         public GenericRepository(AppDbContext context)
         {
             _context = context;
@@ -27,7 +27,7 @@ namespace NLayer.Repository.Repositories
             return await _dbSet.FindAsync(id);
         }
 
-        public IQueryable<T> GetAll(Expression<Func<T, bool>> expression)
+        public IQueryable<T> GetAll()
         {
             return _dbSet.AsNoTracking().AsQueryable();
         }
@@ -66,5 +66,7 @@ namespace NLayer.Repository.Repositories
         {
             _dbSet.RemoveRange(entities);
         }
+
+    
     }
 }
