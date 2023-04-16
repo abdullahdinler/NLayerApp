@@ -1,20 +1,22 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using NLayer.API.Filters;
 using NLayer.Core.DTOs;
 using NLayer.Core.Models;
 using NLayer.Core.Services;
 
 namespace NLayer.API.Controllers
 {
+    // Product sınıfı için gerekli servisler burada tanımlanır
+    // GetAll , GetById , Save , Update , Remove gibi metotlar burada tanımlanır
+    // Bu metotlar Product sınıfı için gerekli işlemleri yapar
+    // Örnek olarak GetById metodu Product sınıfı için GetByIdAsync metodu çağırır. Ve Id sahip product döner 
+
+    
     public class ProductsController : CustomBaseController
     {
-        // Product sınıfı için gerekli servisler burada tanımlanır
-        // GetAll , GetById , Save , Update , Remove gibi metotlar burada tanımlanır
-        // Bu metotlar Product sınıfı için gerekli işlemleri yapar
-        // Örnek olarak GetById metodu Product sınıfı için GetByIdAsync metodu çağırır. Ve Id sahip product döner 
-
-
+        
         private readonly IService<Product> _service;
         private readonly IMapper _mapper;
         private readonly IProductService _productService;
