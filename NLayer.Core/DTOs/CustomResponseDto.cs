@@ -19,22 +19,22 @@ namespace NLayer.Core.DTOs
         public int StatusCode { get; set; }
         public List<String> Errors { get; set; }
 
-        public CustomResponseDto<T> Success(T data, int statusCode)
+        public static CustomResponseDto<T> Success(T data, int statusCode)
         {
             return new CustomResponseDto<T> {Data = data, StatusCode = statusCode, Errors = null};
         }
 
-        public CustomResponseDto<T> Success(int statusCode)
+        public static CustomResponseDto<T> Success(int statusCode)
         {
             return new CustomResponseDto<T> {StatusCode = statusCode};
         }
 
-        public CustomResponseDto<T> Fail(List<string> errors, int statusCode)
+        public static CustomResponseDto<T> Fail(List<string> errors, int statusCode)
         {
             return new CustomResponseDto<T> { Errors = errors, StatusCode = statusCode};
         }
 
-        public CustomResponseDto<T> Fail(string errors, int statusCode)
+        public static CustomResponseDto<T> Fail(string errors, int statusCode)
         {
             return new CustomResponseDto<T> { Errors = new List<string> {errors}, StatusCode = statusCode };
         }

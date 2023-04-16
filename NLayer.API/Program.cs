@@ -27,6 +27,18 @@ builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepositor
 // IService arayüzünü gördüðu zaman Service ten nesne oluþturacaðýný anlayacak ve burada nesnenin yaþam süresini belirlemiþ olduk.
 builder.Services.AddScoped(typeof(IService<>), typeof(Service<>));
 
+// IProductRepository arayüzünü gördüðü zaman ProductRepository ten nesne oluþturacaðýný anlayacak ve burada nesnenin yaþam süresini belirlemiþ olduk.
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+
+// IProductService arayüzünü gördüðü zaman ProductService ten nesne oluþturacaðýný anlayacak ve burada nesnenin yaþam süresini belirlemiþ olduk.
+builder.Services.AddScoped<IProductService, ProductService>();
+
+// ICategoryRepository arayüzünü gördüðü zaman CategoryRepository ten nesne oluþturacaðýný anlayacak ve burada nesnenin yaþam süresini belirlemiþ olduk.
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+
+// ICategoryService arayüzünü gördüðü zaman CategoryService ten nesne oluþturacaðýný anlayacak ve burada nesnenin yaþam süresini belirlemiþ olduk.
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+
 // AutoMapper'ý projemize dahil ettik.
 builder.Services.AddAutoMapper(typeof(MapProfile));
 
