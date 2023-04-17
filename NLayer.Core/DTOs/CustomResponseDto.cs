@@ -7,10 +7,12 @@ using System.Threading.Tasks;
 
 namespace NLayer.Core.DTOs
 {
+    #region Info
     // Bu class veri nesnesi ile response dödürür.
     // Bu class'ın amacı, response döndürürken, veri nesnesi dışında başka bilgiler de döndürmek.
     // Örneğin, response'un status kodu, hata mesajları, vs. 
-   
+    #endregion
+
     public class CustomResponseDto<T>
     {
         public T Data { get; set; }
@@ -21,22 +23,22 @@ namespace NLayer.Core.DTOs
 
         public static CustomResponseDto<T> Success(T data, int statusCode)
         {
-            return new CustomResponseDto<T> {Data = data, StatusCode = statusCode, Errors = null};
+            return new CustomResponseDto<T> { Data = data, StatusCode = statusCode, Errors = null };
         }
 
         public static CustomResponseDto<T> Success(int statusCode)
         {
-            return new CustomResponseDto<T> {StatusCode = statusCode};
+            return new CustomResponseDto<T> { StatusCode = statusCode };
         }
 
         public static CustomResponseDto<T> Fail(List<string> errors, int statusCode)
         {
-            return new CustomResponseDto<T> { Errors = errors, StatusCode = statusCode};
+            return new CustomResponseDto<T> { Errors = errors, StatusCode = statusCode };
         }
 
         public static CustomResponseDto<T> Fail(string errors, int statusCode)
         {
-            return new CustomResponseDto<T> { Errors = new List<string> {errors}, StatusCode = statusCode };
+            return new CustomResponseDto<T> { Errors = new List<string> { errors }, StatusCode = statusCode };
         }
     }
 }

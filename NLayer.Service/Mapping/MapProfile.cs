@@ -9,6 +9,7 @@ using NLayer.Core.Models;
 
 namespace NLayer.Service.Mapping
 {
+    #region Mapping Info
     // MapProfile içerisindeki CreateMap ile dönüşüm işlemleri yapıldı.
     // 
     // CreateMap<Source, Destination>()
@@ -25,6 +26,7 @@ namespace NLayer.Service.Mapping
     // Örnek: Product nesnesini ProductUpdateDto'ya dönüştürmek için CreateMap<Product, ProductUpdateDto>() kullanıldı.
     // 
     // Örnek: ProductUpdateDto nesnesini Product'a dönüştürmek için CreateMap<ProductUpdateDto, Product>() kullanıldı.
+    #endregion
     public class MapProfile : Profile
     {
         public MapProfile()
@@ -36,5 +38,5 @@ namespace NLayer.Service.Mapping
             CreateMap<Product, ProductWithCategoryDto>();
             CreateMap<Category, CategoryWithProductDto>();
         }
-    } 
+    }
 }

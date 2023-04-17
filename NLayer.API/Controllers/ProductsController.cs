@@ -8,6 +8,7 @@ using NLayer.Core.Services;
 
 namespace NLayer.API.Controllers
 {
+
     // Product sınıfı için gerekli servisler burada tanımlanır
     // GetAll , GetById , Save , Update , Remove gibi metotlar burada tanımlanır
     // Bu metotlar Product sınıfı için gerekli işlemleri yapar

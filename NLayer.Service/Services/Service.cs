@@ -8,14 +8,19 @@ using Microsoft.EntityFrameworkCore;
 using NLayer.Core.Repositories;
 using NLayer.Core.Services;
 using NLayer.Core.UnitOfWorks;
+using NLayer.Service.Exceptions;
 
 namespace NLayer.Service.Services
 {
+
+    #region Info
+
     // Core katmanında yazdığımız IService interface'ini implemente ediyoruz. 
     // Bu sayede Core katmanındaki işlemleri kullanabiliyoruz.
     // Generic bir yapı oluştururken, bu yapıda kullanacağımız repository ve unit of work interface'lerini de generic bir yapı oluşturuyoruz.
     // Bu sayede herhangi bir tablo için bu servisi kullanabiliriz.
 
+    #endregion
 
     public class Service<T> : IService<T> where T : class
     {
@@ -30,9 +35,13 @@ namespace NLayer.Service.Services
 
         public async Task<T> GetByIdAsync(int id)
         {
-           return await _repository.GetByIdAsync(id);
-            await _unitOfWork.CommitAsync();
-            
+            var hasEntity = await _repository.GetByIdAsync(id);
+            if (hasEntity == null)
+            {
+                throw new ClientSideException($"{typeof(T).Name}({id}) not found");
+            }
+
+            return hasEntity;
         }
 
         public async Task<IEnumerable<T>> GetAllAsync()
@@ -42,7 +51,7 @@ namespace NLayer.Service.Services
 
         public IQueryable<T> Where(Expression<Func<T, bool>> expression)
         {
-          return  _repository.Where(expression);
+            return _repository.Where(expression);
         }
 
         public async Task<bool> AnyAsync(Expression<Func<T, bool>> expression)
@@ -52,9 +61,9 @@ namespace NLayer.Service.Services
 
         public async Task<T> AddAsync(T entity)
         {
-          await _repository.AddAsync(entity);
-          await _unitOfWork.CommitAsync();
-          return entity;
+            await _repository.AddAsync(entity);
+            await _unitOfWork.CommitAsync();
+            return entity;
         }
 
         public async Task<IEnumerable<T>> AddRangeAsync(IEnumerable<T> entities)
@@ -67,13 +76,13 @@ namespace NLayer.Service.Services
         public async Task UpdateAsync(T entity)
         {
             _repository.Update(entity);
-           await _unitOfWork.CommitAsync();
+            await _unitOfWork.CommitAsync();
         }
 
         public async Task RemoveAsync(T entity)
         {
-           _repository.Remove(entity);
-           await _unitOfWork.CommitAsync();
+            _repository.Remove(entity);
+            await _unitOfWork.CommitAsync();
         }
 
         public async Task RemoveRangeAsync(IEnumerable<T> entities)
