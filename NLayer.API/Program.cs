@@ -1,10 +1,13 @@
 using System.Reflection;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NLayer.API.Filters;
 using NLayer.API.Middlewares;
+using NLayer.API.Modules;
 using NLayer.Core.Repositories;
 using NLayer.Core.Services;
 using NLayer.Core.UnitOfWorks;
@@ -25,35 +28,41 @@ builder.Services.Configure<ApiBehaviorOptions>(x =>
     x.SuppressModelStateInvalidFilter = true;
 });
 
-
-
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddMemoryCache();
 
-// IUnitOfWork arayüzünü gördüðu zaman UnitOfWorktan nesne oluþturacaðýný anlayacak ve burada nesnenin yaþam süresini belirlemiþ olduk.
-builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-// IGenericRepository arayüzünü gördüðu zaman GenericRepository tan nesne oluþturacaðýný anlayacak ve burada nesnenin yaþam süresini belirlemiþ olduk.
-builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
-// IService arayüzünü gördüðu zaman Service ten nesne oluþturacaðýný anlayacak ve burada nesnenin yaþam süresini belirlemiþ olduk.
-builder.Services.AddScoped(typeof(IService<>), typeof(Service<>));
-
-// IProductRepository arayüzünü gördüðü zaman ProductRepository ten nesne oluþturacaðýný anlayacak ve burada nesnenin yaþam süresini belirlemiþ olduk.
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
-
-// IProductService arayüzünü gördüðü zaman ProductService ten nesne oluþturacaðýný anlayacak ve burada nesnenin yaþam süresini belirlemiþ olduk.
-builder.Services.AddScoped<IProductService, ProductService>();
-
-// ICategoryRepository arayüzünü gördüðü zaman CategoryRepository ten nesne oluþturacaðýný anlayacak ve burada nesnenin yaþam süresini belirlemiþ olduk.
-builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
-
-// ICategoryService arayüzünü gördüðü zaman CategoryService ten nesne oluþturacaðýný anlayacak ve burada nesnenin yaþam süresini belirlemiþ olduk.
-builder.Services.AddScoped<ICategoryService, CategoryService>();
+// Oluþturduðumuz filtrenin calýþmasý için burada eklememiz gerekiyor.
+builder.Services.AddScoped(typeof(NotFoundFilter<>));
 
 // AutoMapper'ý projemize dahil ettik.
 builder.Services.AddAutoMapper(typeof(MapProfile));
+
+#region AutoFac kullanmadan önce yaptýðýmýz ayarlamalar
+//// IUnitOfWork arayüzünü gördüðu zaman UnitOfWorktan nesne oluþturacaðýný anlayacak ve burada nesnenin yaþam süresini belirlemiþ olduk.
+//builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+//// IGenericRepository arayüzünü gördüðu zaman GenericRepository tan nesne oluþturacaðýný anlayacak ve burada nesnenin yaþam süresini belirlemiþ olduk.
+//builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+
+//// IService arayüzünü gördüðu zaman Service ten nesne oluþturacaðýný anlayacak ve burada nesnenin yaþam süresini belirlemiþ olduk.
+//builder.Services.AddScoped(typeof(IService<>), typeof(Service<>));
+
+//// IProductRepository arayüzünü gördüðü zaman ProductRepository ten nesne oluþturacaðýný anlayacak ve burada nesnenin yaþam süresini belirlemiþ olduk.
+//builder.Services.AddScoped<IProductRepository, ProductRepository>();
+
+//// IProductService arayüzünü gördüðü zaman ProductService ten nesne oluþturacaðýný anlayacak ve burada nesnenin yaþam süresini belirlemiþ olduk.
+//builder.Services.AddScoped<IProductService, ProductService>();
+
+//// ICategoryRepository arayüzünü gördüðü zaman CategoryRepository ten nesne oluþturacaðýný anlayacak ve burada nesnenin yaþam süresini belirlemiþ olduk.
+//builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+
+//// ICategoryService arayüzünü gördüðü zaman CategoryService ten nesne oluþturacaðýný anlayacak ve burada nesnenin yaþam süresini belirlemiþ olduk.
+//builder.Services.AddScoped<ICategoryService, CategoryService>();
+#endregion
 
 
 // Burada appsettings.json dosyasýnda belirlediðimiz connection adresini aliyoruz. Ve daha sonra appdbcontextimizin nerede oluðunu acýkca bildiriyoruz.
@@ -64,6 +73,12 @@ builder.Services.AddDbContext<AppDbContext>(x =>
         option.MigrationsAssembly(Assembly.GetAssembly(typeof(AppDbContext)).GetName().Name);
     });
 });
+
+
+// AutoFac kutuphanesini kullanmak için gereken ayarlanma yapýldý.
+builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
+builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
+    containerBuilder.RegisterModule(new RepoServiceModule()));
 
 
 

@@ -8,25 +8,23 @@ using NLayer.Core.Services;
 
 namespace NLayer.API.Controllers
 {
-
+    #region Info
     // Product sınıfı için gerekli servisler burada tanımlanır
     // GetAll , GetById , Save , Update , Remove gibi metotlar burada tanımlanır
     // Bu metotlar Product sınıfı için gerekli işlemleri yapar
     // Örnek olarak GetById metodu Product sınıfı için GetByIdAsync metodu çağırır. Ve Id sahip product döner 
+    #endregion
 
-    
     public class ProductsController : CustomBaseController
     {
-        
-        private readonly IService<Product> _service;
         private readonly IMapper _mapper;
-        private readonly IProductService _productService;
+        private readonly IProductService _service;
 
-        public ProductsController(IService<Product> service, IMapper mapper, IProductService productService)
+        public ProductsController(IMapper mapper, IProductService service)
         {
-            _service = service;
+            
             _mapper = mapper;
-            _productService = productService;
+            _service = service;
         }
 
         //Get api/product/
@@ -42,10 +40,11 @@ namespace NLayer.API.Controllers
         [HttpGet("[action]")]
         public async Task<IActionResult> GetProductWithCategory()
         {
-            return CreateActionResult(await _productService.GetProductsWithCategory());
+            return CreateActionResult(await _service.GetProductsWithCategory());
         }
 
         //Get api/product/id
+        [ServiceFilter(typeof(NotFoundFilter<Product>))]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
