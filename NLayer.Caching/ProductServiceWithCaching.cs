@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using NLayer.Core.DTOs;
@@ -13,11 +7,12 @@ using NLayer.Core.Repositories;
 using NLayer.Core.Services;
 using NLayer.Core.UnitOfWorks;
 using NLayer.Service.Exceptions;
+using System.Linq.Expressions;
 
 namespace NLayer.Caching
 {
 
-    // 
+
     public class ProductServiceWithCaching : IProductService
     {
         private const string CacheProductKey = "cacheProduct";
@@ -63,7 +58,8 @@ namespace NLayer.Caching
 
         public Task<bool> AnyAsync(Expression<Func<Product, bool>> expression)
         {
-            return Task.FromResult(_memorycache.Get<List<Product>>(CacheProductKey).Any());        }
+            return Task.FromResult(_memorycache.Get<List<Product>>(CacheProductKey).Any());
+        }
 
         public async Task<Product> AddAsync(Product entity)
         {
@@ -103,11 +99,11 @@ namespace NLayer.Caching
             await CacheAllProductsAsync();
         }
 
-        public Task<CustomResponseDto<List<ProductWithCategoryDto>>> GetProductsWithCategory()
+        public Task<List<ProductWithCategoryDto>> GetProductsWithCategory()
         {
             var products = _memorycache.Get<IEnumerable<Product>>(CacheProductKey);
             var productWithCategoryDto = _mapper.Map<List<ProductWithCategoryDto>>(products);
-            return Task.FromResult(CustomResponseDto<List<ProductWithCategoryDto>>.Success(productWithCategoryDto, 201));
+            return Task.FromResult(productWithCategoryDto);
         }
 
 
