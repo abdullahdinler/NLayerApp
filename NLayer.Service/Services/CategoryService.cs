@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using NLayer.Core.DTOs;
 using NLayer.Core.Models;
 using NLayer.Core.Repositories;
@@ -26,7 +21,7 @@ namespace NLayer.Service.Services
         {
             var category = await _repository.GetSingleCategoryByIdWithProductsAsync(categoryId);
             var categoryDto = _mapper.Map<CategoryWithProductDto>(category);
-            return CustomResponseDto<CategoryWithProductDto>.Success(categoryDto , 200);
+            return CustomResponseDto<CategoryWithProductDto>.Success(categoryDto, 200);
         }
     }
 }

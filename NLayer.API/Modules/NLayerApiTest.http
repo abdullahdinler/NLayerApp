@@ -1,0 +1,21 @@
+GET https://localhost:7202/api/Products/1
+
+### Get all products
+```
+
+Get https://localhost:7202/api/Categories/1
+
+```
+
+### Get all categories
+```
+POST https://localhost:7202/api/Products/
+Content-Type application/json
+{
+
+  "name": "Api Test Veri",
+  "stock": 34,
+  "price": 45,
+  "categoryId": 1
+}
+```

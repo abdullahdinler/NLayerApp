@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace NLayer.Service.Exceptions
+﻿namespace NLayer.Service.Exceptions
 {
     #region Info
 
@@ -20,7 +14,7 @@ namespace NLayer.Service.Exceptions
     {
         public ClientSideException(string message) : base(message)
         {
-            
+
         }
     }
 }
