@@ -1,0 +1,42 @@
+﻿@model ProductDto
+@{
+    ViewData["Title"] = "Save";
+}
+
+<h1>New a Product Added</h1>
+
+<form asp-action="Save" asp-controller="Products" method="post" class="form">
+
+    <label asp-for="Name">Product Name</label>
+    <input asp-for="Name" class="form-control" />
+    <span asp-validation-for="Name" class="text-danger"></span>
+
+    <br />
+
+    <label asp-for="Price">Product Price</label>
+    <input asp-for="Price" class="form-control" />
+    <span asp-validation-for="Price" class="text-danger"></span>
+
+    <br />
+
+    <label asp-for="Stock">Product Stock</label>
+    <input asp-for="Stock" class="form-control" />
+    <span asp-validation-for="Stock" class="text-danger"></span>
+
+    <br />
+
+    <label asp-for="CategoryId">Product Category</label>
+    <select asp-for="CategoryId" asp-items="ViewBag.Categories" class="form-control">
+        <option value="">Select a Category</option>
+    </select>
+
+    <br />
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-action="Index" asp-controller="Products" class="btn btn-danger">Cancel</a>
+    <span asp-validation-summary="All" class="text-danger"></span>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
