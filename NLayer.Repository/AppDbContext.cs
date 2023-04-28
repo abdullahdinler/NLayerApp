@@ -19,26 +19,17 @@ namespace NLayer.Repository
         // SaveChanges() ve SaveChangesAsync() metodlarını override ederek tüm entityler için CreatedDate ve UpdatedDate alanlarını otomatik olarak güncelleyebiliriz.
         public override int SaveChanges()
         {
-            foreach (var item in ChangeTracker.Entries())
-            {
-                if (item.Entity is BaseEntity entityReference)
-                {
-                    switch (item.State)
-                    {
-                        case EntityState.Added:
-                            entityReference.CreatedDate = DateTime.Now;
-                            break;
-                        case EntityState.Modified:
-                            Entry(entityReference).Property(x => x.CreatedDate).IsModified = false;
-                            entityReference.UpdatedDate = DateTime.Now;
-                            break;
-                    }
-                }
-            }
+            UpdateChangeTracker();
             return base.SaveChanges();
         }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            UpdateChangeTracker();
+            return base.SaveChangesAsync(cancellationToken);
+        }
+
+        public void UpdateChangeTracker()
         {
             foreach (var item in ChangeTracker.Entries())
             {
@@ -47,6 +38,7 @@ namespace NLayer.Repository
                     switch (item.State)
                     {
                         case EntityState.Added:
+                            Entry(entityReference).Property(x => x.UpdatedDate).IsModified = false;
                             entityReference.CreatedDate = DateTime.Now;
                             break;
                         case EntityState.Modified:
@@ -56,9 +48,7 @@ namespace NLayer.Repository
                     }
                 }
             }
-            return base.SaveChangesAsync(cancellationToken);
         }
-
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
